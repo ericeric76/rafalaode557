@@ -1,0 +1,243 @@
+/* --- RESET & GLOBAL STYLE --- */
+:root {
+    --bg-color: #0d1117; 
+    --text-color: #c9d1d9;
+    --main-accent: #00ff41; 
+    --secondary-accent: #58a6ff; 
+    --border-color: #30363d;
+    --font-main: 'Courier New', Courier, monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- NAVBAR ADJUSTMENT --- */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(13, 17, 23, 0.98);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.navbar {
+    width: 100%; /* Pastikan lebar penuh */
+    max-width: 100%; /* Hilangkan batasan lebar agar bisa ke ujung */
+    margin: 0;
+    display: flex;
+    justify-content: space-between; /* Menendang logo ke kiri dan menu ke kanan */
+    align-items: center;
+    padding: 10px 40px; /* Jarak dari pinggir layar (bisa kamu kurangi jadi 20px jika mau lebih mepet lagi) */
+}
+
+.logo { 
+    color: var(--main-accent); 
+    font-weight: bold; 
+    font-size: 1.1rem; 
+}
+
+.nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 25px; /* Jarak antar menu */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+/* --- SECTION (PERBAIKAN JARAK RAPAT) --- */
+section {
+    min-height: auto; /* Section tidak lagi memaksa satu layar penuh */
+    padding: 40px 20px; /* Jarak atas-bawah dikurangi agar konten naik */
+    max-width: 900px;
+    margin: auto;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+/* Penyesuaian khusus untuk Home agar tidak tertutup Navbar */
+#home {
+    padding-top: 100px; 
+    padding-bottom: 20px;
+}
+
+h2 {
+    color: var(--main-accent);
+    margin-bottom: 25px;
+    font-size: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+h2::before { content: "# "; }
+
+/* --- HERO & PROFILE IMG --- */
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.terminal-window {
+    background: #161b22;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.terminal-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+/* FIXED: Foto Profil Normal & Proporsional */
+.profile-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid var(--main-accent);
+    margin-bottom: 20px;
+    object-fit: cover;
+    filter: none; /* Filter hijau sudah dibuang */
+}
+
+.hero h1 { font-size: 2.5rem; margin-bottom: 10px; color: #fff; }
+.typewriter { color: var(--main-accent); font-size: 1.1rem; margin-bottom: 20px;}
+
+.cmd { color: var(--secondary-accent); }
+.str { color: #ce9178; }
+
+button.download-btn {
+    background: transparent;
+    border: 1px solid var(--main-accent);
+    color: var(--main-accent);
+    padding: 10px 20px;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+button.download-btn:hover {
+    background: var(--main-accent);
+    color: var(--bg-color);
+    box-shadow: 0 0 15px var(--main-accent);
+}
+
+/* --- CARDS & BIODATA --- */
+.card {
+    background: #161b22;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    border-color: var(--secondary-accent);
+    transform: translateY(-3px);
+}
+
+/* Merapatkan jarak teks biodata */
+.card-p { 
+    margin-bottom: 4px; 
+    font-size: 0.95rem;
+}
+
+.card h3 { color: var(--secondary-accent); margin-bottom: 5px; }
+.date { color: #8b949e; font-size: 0.8rem; margin-bottom: 10px; display: block;}
+
+/* --- SKILLS --- */
+.skill-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.skill { margin-bottom: 15px; }
+.skill p { display: flex; justify-content: space-between; margin-bottom: 5px;}
+        
+.progress {
+    background: #21262d;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--main-accent);
+    width: 0;
+    transition: width 1.5s ease-in-out;
+    box-shadow: 0 0 10px var(--main-accent);
+}
+
+/* --- CONTACT FORM --- */
+.contact-form {
+    background: #161b22;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+}
+
+.form-group { margin-bottom: 15px; display: flex;}
+.promt { color: var(--main-accent); margin-right: 10px;}
+
+input, textarea {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    font-family: var(--font-main) !important;
+    width: 100%;
+    padding: 5px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-bottom: 1px solid var(--main-accent) !important;
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 25px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.8rem;
+    color: #8b949e;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 1.8rem; }
+    section { border: none; padding-top: 80px;}
+}

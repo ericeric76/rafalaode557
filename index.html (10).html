@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rafa | Terminal_Dev.exe</title>
+    <style>
+        /* --- GLOBAL STYLE & VARIABLES --- */
+        :root {
+            --bg-color: #0d1117; 
+            --text-color: #c9d1d9;
+            --main-accent: #00ff41; 
+            --secondary-accent: #58a6ff; 
+            --border-color: #30363d;
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR (PERUBAHAN POSISI KE UJUNG) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.98);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .navbar {
+            width: 100%;
+            max-width: 100%; /* Menghilangkan limit agar bisa ke ujung */
+            margin: 0;
+            display: flex;
+            justify-content: space-between; /* Logo kiri, Nav kanan */
+            align-items: center;
+            padding: 10px 30px; /* Jarak aman dari pinggir layar */
+        }
+
+        .logo { color: var(--main-accent); font-weight: bold; font-size: 1rem; }
+        .logo::before { content: "> "; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--main-accent); }
+
+        /* --- SECTION COMPACT LAYOUT --- */
+        section {
+            min-height: auto; 
+            padding: 25px 15px; 
+            max-width: 850px;
+            margin: auto;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
+
+        #home { padding-top: 75px; padding-bottom: 15px; }
+
+        h2 {
+            color: var(--main-accent);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+            display: inline-block;
+        }
+        h2::before { content: "# "; }
+
+        /* --- TERMINAL WINDOW & PROFILE --- */
+        .terminal-window {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--main-accent);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .hero h1 { font-size: 1.8rem; margin-bottom: 5px; color: #fff; }
+        .typewriter { color: var(--main-accent); font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; }
+
+        .cmd { color: var(--secondary-accent); font-size: 0.85rem; margin-bottom: 4px; }
+        .str { color: #ce9178; }
+
+        .download-btn {
+            background: transparent;
+            border: 1px solid var(--main-accent);
+            color: var(--main-accent);
+            padding: 8px 16px;
+            font-family: var(--font-main);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .download-btn:hover { background: var(--main-accent); color: #000; }
+
+        /* --- CONTENT CARDS --- */
+        .card {
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .card h3 { color: var(--secondary-accent); font-size: 1.1rem; margin-bottom: 4px; }
+        .date { color: #8b949e; font-size: 0.75rem; margin-bottom: 8px; display: block; }
+        .card-p { margin-bottom: 5px; font-size: 0.9rem; line-height: 1.4; }
+
+        /* --- SKILLS GRID --- */
+        .skill-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .skill p { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+        .progress { background: #21262d; height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--main-accent); width: 0; transition: width 1.2s ease-in-out; }
+
+        /* --- CONTACT FORM --- */
+        .form-group { margin-bottom: 12px; display: flex; flex-direction: column; }
+        .promt { color: var(--main-accent); font-size: 0.9rem; margin-bottom: 5px; }
+        input, textarea {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+            color: var(--text-color); font-family: var(--font-main); width: 100%; padding: 10px; outline: none; font-size: 0.9rem;
+        }
+        input:focus, textarea:focus { border-color: var(--main-accent); }
+        
+        .submit-btn {
+            background: var(--secondary-accent); color: #fff; padding: 12px; cursor: pointer;
+            width: 100%; border: none; font-family: var(--font-main); margin-top: 10px; font-size: 0.9rem; font-weight: bold;
+        }
+
+        footer { text-align: center; padding: 20px; color: #8b949e; font-size: 0.75rem; border-top: 1px solid var(--border-color); }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 20px; height: 20px; border: 2px solid var(--main-accent); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s ease;
+        }
+
+        @media (max-width: 650px) {
+            .navbar { padding: 10px 15px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.7rem; }
+            section { border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">Rafa.exe</div>
+            <ul class="nav-links">
+                <li><a href="#home">/Home</a></li>
+                <li><a href="#about">/About</a></li>
+                <li><a href="#skills">/Skills</a></li>
+                <li><a href="#experience">/Exp</a></li>
+                <li><a href="#contact">/Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+            </div>
+            <img src="rafa.jpeg" alt="Rafa" class="profile-img">
+            <p class="cmd">user@rafa:~ $ <span class="str">whoami</span></p>
+            <h1>La Ode Rafael Astiani</h1>
+            <p class="typewriter">C:\> Mahasiswa UIB | Web Developer | AI Enthusiast</p>
+            <p class="cmd">user@rafa:~ $ <span class="str">./get_cv.sh</span></p>
+            <button class="download-btn" onclick="downloadCV()">[ Download_CV ]</button>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About_Me</h2>
+        <div class="card">
+            <p class="cmd">user@rafa:~ $ <span class="str">cat profile_biodata.log</span></p>
+            <p class="card-p">> <strong>Nama:</strong> La Ode Rafael Astiani</p>
+            <p class="card-p">> <strong>NPM:</strong> 2531183</p>
+            <p class="card-p">> <strong>Umur:</strong> 18 Tahun</p>
+            <p class="card-p">> <strong>Kampus:</strong> Universitas Internasional Batam (UIB)</p>
+            <p class="card-p">> <strong>Prodi:</strong> Sistem Informasi</p>
+            <p class="card-p">> <strong>Hobi:</strong> Musik</p>
+            <p class="card-p">> <strong>Goals:</strong> Sukses & Mencapai Kebebasan Finansial [LOADING...]</p>
+            <br>
+            <p class="card-p">> Saya adalah mahasiswa SI yang fokus pada pengembangan web modern dan integrasi AI untuk menciptakan pengalaman digital yang lebih cerdas.</p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Core_Skills</h2>
+        <div class="card skill-container">
+            <div class="skill">
+                <p><span>HTML/CSS</span> <span>90%</span></p>
+                <div class="progress"><div class="progress-bar" data-width="90%"></div></div>
+            </div>
+            <div class="skill">
+                <p><span>JavaScript</span> <span>85%</span></p>
+                <div class="progress"><div class="progress-bar" data-width="85%"></div></div>
+            </div>
+            <div class="skill">
+                <p><span>UI_Design</span> <span>80%</span></p>
+                <div class="progress"><div class="progress-bar" data-width="80%"></div></div>
+            </div>
+            <div class="skill">
+                <p><span>AI_Integration</span> <span>60%</span></p>
+                <div class="progress"><div class="progress-bar" data-width="60%"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2>Experience.log</h2>
+        <div class="card">
+            <h3>Freelance Web Dev</h3>
+            <span class="date">2024 - PRESENT</span>
+            <p class="card-p">Membangun landing page responsif dan portfolio digital untuk berbagai kebutuhan proyek mandiri.</p>
+        </div>
+        <div class="card">
+            <h3>Mahasiswa Sistem Informasi - UIB</h3>
+            <span class="date">2025 - PRESENT</span>
+            <p class="card-p">Mempelajari dasar manajemen data, algoritma, dan arsitektur sistem informasi.</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact_User</h2>
+        <div class="card">
+            <form id="contactForm">
+                <div class="form-group"><span class="promt">Name:</span><input type="text" id="name" required placeholder="Enter your name..."></div>
+                <div class="form-group"><span class="promt">Email:</span><input type="email" id="email" required placeholder="Enter your email..."></div>
+                <div class="form-group"><span class="promt">Message:</span><textarea id="message" rows="3" required placeholder="Type your message here..."></textarea></div>
+                <button type="submit" class="submit-btn">./send_message.exe</button>
+            </form>
+            <p id="formMessage" style="margin-top:15px; text-align:center; font-size: 0.9rem; font-weight: bold;"></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Rafa.dev [Version 1.0.2026] | Made for Digital Freedom_</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // TYPEWRITER EFFECT
+            const tw = document.querySelector('.typewriter');
+            const txt = tw.innerText; tw.innerText = ''; let i = 0;
+            function type() { if (i < txt.length) { tw.innerHTML += txt.charAt(i); i++; setTimeout(type, 50); } }
+            type();
+
+            // CUSTOM CURSOR
+            const cur = document.createElement('div');
+            cur.classList.add('custom-cursor');
+            document.body.appendChild(cur);
+            document.addEventListener('mousemove', (e) => {
+                cur.style.left = e.clientX - 10 + 'px';
+                cur.style.top = e.clientY - 10 + 'px';
+            });
+
+            // ANIMATE SKILLS & REVEAL ON SCROLL
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.id === 'skills') {
+                            entry.target.querySelectorAll('.progress-bar').forEach(bar => {
+                                bar.style.width = bar.getAttribute('data-width');
+                            });
+                        }
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('section').forEach(sec => {
+                sec.style.opacity = '0'; sec.style.transform = 'translateY(25px)';
+                sec.style.transition = 'all 0.8s ease-out';
+                observer.observe(sec);
+            });
+
+            window.downloadCV = () => {
+                alert(">> ACCESS GRANTED: Menginisialisasi unduhan CV_Rafa.pdf...");
+            };
+            
+            document.getElementById('contactForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const msg = document.getElementById('formMessage');
+                msg.style.color = "var(--main-accent)";
+                msg.innerHTML = ">> [SUCCESS]: Pesan Anda telah berhasil di-upload ke server Rafa._";
+                e.target.reset();
+            });
+        });
+    </script>
+</body>
+</html>
